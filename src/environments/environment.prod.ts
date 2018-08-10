@@ -1,3 +1,6 @@
+import { FIREBASE_CONFIG } from './private';
+
 export const environment = {
-  production: true
+  production: true,
+  firebase: FIREBASE_CONFIG
 };

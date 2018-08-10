@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AngularFireModule } from 'angularfire2';
 
 import { environment } from '../environments/environment';
 import { metaReducers, reducerProvider, reducerToken } from './@ngrx/reducers';
@@ -25,9 +26,10 @@ import { ListComponent } from './list/list.component';
       stateKey: 'router'
     }),
     StoreDevtoolsModule.instrument({
-      name: 'NgRx Junkers DevTools',
+      name: 'NgRx Simple Board',
       logOnly: environment.production
-    })
+    }),
+    AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
