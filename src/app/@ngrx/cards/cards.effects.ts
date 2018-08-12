@@ -5,7 +5,7 @@ import { ofAction } from 'ngrx-actions/dist';
 import { from } from 'rxjs';
 import { filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
-import { BoardSelected } from './../board/board.actions';
+import { BoardSelected } from '../boards/boards.actions';
 import { Card } from './card.model';
 import { AddCard, ModifyCard, RemoveCard } from './cards.actions';
 

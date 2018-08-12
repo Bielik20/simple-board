@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CardStore } from '../CardStore';
-import { ListSchema } from '../ListSchema';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { getSelectedBoardFull } from '../@ngrx/selectors';
+import { BoardFull } from './../@ngrx/boards/board.model';
+import { State } from './../@ngrx/reducers';
 
 @Component({
   selector: 'app-board',
@@ -8,30 +12,11 @@ import { ListSchema } from '../ListSchema';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  cardStore: CardStore;
-  lists: ListSchema[];
-  constructor() { }
-  setMockData(): void {
-    this.cardStore = new CardStore();
-    const lists: ListSchema[] = [
-      {
-        name: 'To Do',
-        cards: []
-      },
-      {
-        name: 'Doing',
-        cards: []
-      },
-      {
-        name: 'Done',
-        cards: []
-      }
-    ]
-    this.lists = lists;
+  board$: Observable<BoardFull>;
+
+  constructor(private store: Store<State>) {
+    this.board$ = this.store.select(getSelectedBoardFull);
   }
 
-  ngOnInit() {
-    this.setMockData();
-  }
-
+  ngOnInit() {}
 }

@@ -1,6 +1,11 @@
 import { Action } from '@ngrx/store';
 
-import { Board } from '../board.model';
+import { Board } from './board.model';
+
+export class BoardSelected implements Action {
+  readonly type = '[Boards] selected';
+  constructor(public boardId: string) {}
+}
 
 export class BoardAdded implements Action {
   readonly type = '[Boards] added';

@@ -5,3 +5,48 @@ div {
     height: 100vh;
     overflow-x: scroll;
 }
+
+/* reset */
+progress:indeterminate {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  display: block;
+  margin: 1em auto;
+  background: none;
+  width: 1em;
+  height: 1em;
+  border: 0;
+}
+progress:indeterminate::-moz-progress-bar {
+  background: none;
+}
+progress:indeterminate::-webkit-progress-bar {
+  display: none;
+}
+progress:indeterminate::-ms-fill {
+  animation-name: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(  0deg) }
+  100% { transform: rotate(360deg) }
+}
+
+progress:indeterminate {
+  border: 3em double;
+  border-color: gray darkgray;
+  border-radius: 50%;
+  animation: spin 1s infinite;
+}
+
+html {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  display: table-cell;
+  vertical-align: middle;
+}

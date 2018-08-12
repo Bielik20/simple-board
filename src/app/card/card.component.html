@@ -1,3 +1,3 @@
 <p class="card" draggable="true" (dragstart)="dragStart($event)" id="{{card.id}}">
- {{card.description}}
+  <i class="fas fa-trash delete-icon" (click)='deleteCard()'></i> {{card.title}}
 </p>

@@ -1,9 +1,8 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, Store } from 'ngrx-actions/dist';
 
-import { BoardSelected } from './../board.actions';
-import { Board } from './../board.model';
-import { BoardAdded, BoardModified, BoardRemoved } from './boards.actions';
+import { Board } from './board.model';
+import { BoardAdded, BoardModified, BoardRemoved, BoardSelected } from './boards.actions';
 
 export interface BoardsState extends EntityState<Board> {
   selectedBoardId: string;

@@ -1,5 +1,5 @@
 export interface Card {
-  id: string;
+  id?: string;
   title: string;
   order: number;
   listId: string;

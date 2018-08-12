@@ -1,3 +1,7 @@
-<div>
-  <app-list *ngFor="let list of lists" [list]="list" [cardStore]="cardStore"></app-list>
+<div *ngIf='board$ | async as board; else spinner'>
+  <app-list *ngFor="let list of board.lists" [list]="list"></app-list>
 </div>
+
+<ng-template #spinner>
+  <progress></progress>
+</ng-template>

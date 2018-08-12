@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { List } from '../list.model';
+import { List } from './list.model';
 
 export class ListAdded implements Action {
   readonly type = '[Lists] added';

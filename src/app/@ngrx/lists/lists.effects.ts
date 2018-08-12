@@ -5,9 +5,9 @@ import { ofAction } from 'ngrx-actions/dist';
 import { from } from 'rxjs';
 import { filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
-import { List } from '../list.model';
+import { BoardSelected } from '../boards/boards.actions';
+import { List } from './list.model';
 import { AddList, ModifyList, RemoveList } from './lists.actions';
-import { BoardSelected } from '../../board/board.actions';
 
 @Injectable()
 export class ListsEffects {

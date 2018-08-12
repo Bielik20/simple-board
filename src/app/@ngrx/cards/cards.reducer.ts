@@ -6,9 +6,13 @@ import { CardAdded, CardModified, CardRemoved } from './cards.actions';
 
 export interface CardsState extends EntityState<Card> {}
 
+export function sortByOrder(a: Card, b: Card): number {
+  return a.order - b.order;
+}
+
 export const cardsAdapter: EntityAdapter<Card> = createEntityAdapter({
   selectId: card => card.id,
-  sortComparer: false
+  sortComparer: sortByOrder
 });
 
 @Store<CardsState>(cardsAdapter.getInitialState())

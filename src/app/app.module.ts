@@ -8,12 +8,11 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { environment } from 'environments/environment';
 
-import { environment } from '../environments/environment';
-import { BoardEffects } from './@ngrx/board/board.effects';
-import { BoardsEffects } from './@ngrx/board/boards/boards.effects';
+import { BoardsEffects } from './@ngrx/boards/boards.effects';
 import { CardsEffects } from './@ngrx/cards/cards.effects';
-import { ListsEffects } from './@ngrx/list/lists/lists.effects';
+import { ListsEffects } from './@ngrx/lists/lists.effects';
 import { metaReducers, reducerProvider, reducerToken } from './@ngrx/reducers';
 import { CustomRouterStateSerializer } from './@ngrx/router/router.serializer';
 import { AppComponent } from './app.component';
@@ -36,7 +35,7 @@ import { ROUTES } from './routes';
       name: 'NgRx Simple Board',
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([BoardEffects, CardsEffects, ListsEffects, BoardsEffects]),
+    EffectsModule.forRoot([CardsEffects, ListsEffects, BoardsEffects]),
     AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [

@@ -1,25 +1,25 @@
 import { InjectionToken } from '@angular/core';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { environment } from 'environments/environment';
 
-import { environment } from '../../environments/environment';
-import { boardReducer, BoardState } from './board/board.reducer';
+import { boardsReducer, BoardsState } from './boards/boards.reducer';
 import { cardsReducer, CardsState } from './cards/cards.reducer';
-import { listReducer, ListState } from './list/list.reducer';
+import { listsReducer, ListsState } from './lists/lists.reducer';
 import { RouterStateUrl } from './router/router.model';
 
 export interface State {
   router: RouterReducerState<RouterStateUrl>;
-  board: BoardState;
+  boards: BoardsState;
   cards: CardsState;
-  list: ListState;
+  lists: ListsState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   router: routerReducer,
-  board: boardReducer,
+  boards: boardsReducer,
   cards: cardsReducer,
-  list: listReducer
+  lists: listsReducer
 };
 
 export const reducerToken = new InjectionToken<ActionReducerMap<State>>('Reducers');

@@ -1,7 +1,10 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { CardSchema } from '../CardSchema';
-import { ListSchema } from '../ListSchema';
-import { CardStore } from '../CardStore';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+import { Card } from './../@ngrx/cards/card.model';
+import { AddCard, ModifyCard } from './../@ngrx/cards/cards.actions';
+import { ListFull } from './../@ngrx/lists/list.model';
+import { State } from './../@ngrx/reducers';
 
 @Component({
   selector: 'app-list',
@@ -9,15 +12,34 @@ import { CardStore } from '../CardStore';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  @Input() list: ListSchema;
-  @Input() cardStore: CardStore;
+  @Input()
+  list: ListFull;
   displayAddCard = false;
 
-  constructor() { }
+  constructor(private store: Store<State>) {}
+
+  ngOnInit(): void {}
+
   toggleDisplayAddCard() {
-    this.displayAddCard = ! this.displayAddCard;
+    this.displayAddCard = !this.displayAddCard;
   }
-  ngOnInit(): void {
+
+  onEnter(value: string) {
+    const card: Card = {
+      title: value,
+      order: this.getNextOrder(),
+      listId: this.list.id,
+      boardId: this.list.boardId
+    };
+    this.store.dispatch(new AddCard(card));
+  }
+
+  private getNextOrder(): number {
+    const length = this.list.cards.length;
+    if (length === 0) {
+      return 1;
+    }
+    return this.list.cards[length - 1].order + 100;
   }
 
   allowDrop($event) {
@@ -26,32 +48,58 @@ export class ListComponent implements OnInit {
 
   drop($event) {
     $event.preventDefault();
-    const data = $event.dataTransfer.getData('text');
+    const draggedCardId = $event.dataTransfer.getData('text');
+    const targetId = $event.target.id;
+    const targetClassName = $event.target.className;
 
-    let target = $event.target;
-    const targetClassName = target.className;
-
-    while( target.className !== 'list') {
-      target = target.parentNode;
+    if (targetClassName === 'card') {
+      return this.draggedOverCard(targetId, draggedCardId);
     }
-    target = target.querySelector('.cards');
-
-    if(targetClassName === 'card') {
-      $event.target.parentNode.insertBefore(document.getElementById(data), $event.target);
-    } else if(targetClassName === 'list__title') {
-      if (target.children.length) {
-        target.insertBefore(document.getElementById(data), target.children[0]);
-      }else {
-        target.appendChild(document.getElementById(data));
-      }
-    } else {
-      target.appendChild(document.getElementById(data));
+    if (targetClassName === 'list__title') {
+      return this.draggedOverListTitle(draggedCardId);
     }
-
+    if (targetClassName === 'list__newcard') {
+      return this.draggedOverListFoot(draggedCardId);
+    }
   }
 
-  onEnter(value: string) {
-    const cardId =  this.cardStore.newCard(value);
-    this.list.cards.push(cardId);
+  private draggedOverCard(targetId: string, draggedCardId: string) {
+    const targetIndex = this.list.cards.findIndex(card => card.id === targetId);
+    const targetOrder = this.list.cards[targetIndex].order;
+    const aboveOrder = this.getOrderAbove(targetId);
+    const order = (targetOrder + aboveOrder) / 2;
+    this.modifyCard(draggedCardId, order);
+  }
+
+  private draggedOverListTitle(draggedCardId: any) {
+    if (this.list.cards.length > 0) {
+      const firstCardOrder = this.list.cards[0].order;
+      const order = firstCardOrder / 2;
+      this.modifyCard(draggedCardId, order);
+    } else {
+      this.modifyCard(draggedCardId, 1);
+    }
+  }
+
+  private draggedOverListFoot(draggedCardId: any) {
+    const order = this.getNextOrder();
+    this.modifyCard(draggedCardId, order);
+  }
+
+  private modifyCard(cardId: string, order: number) {
+    this.store.dispatch(new ModifyCard(cardId, { listId: this.list.id, order }));
+  }
+
+  private getOrderAbove(cardId: string): number {
+    const index = this.list.cards.findIndex(card => card.id === cardId);
+    const cardAbove = this.getCardAbove(index);
+    return cardAbove ? cardAbove.order : 0;
+  }
+
+  private getCardAbove(index: number): Card {
+    if (index === -1 || index === 0) {
+      return null;
+    }
+    return this.list.cards[index - 1];
   }
 }

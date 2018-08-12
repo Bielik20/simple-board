@@ -1,14 +1,18 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, Store } from 'ngrx-actions/dist';
 
-import { List } from './../list.model';
+import { List } from './list.model';
 import { ListAdded, ListModified, ListRemoved } from './lists.actions';
 
 export interface ListsState extends EntityState<List> {}
 
+export function sortByOrder(a: List, b: List): number {
+  return a.order - b.order;
+}
+
 export const listsAdapter: EntityAdapter<List> = createEntityAdapter({
   selectId: list => list.id,
-  sortComparer: false
+  sortComparer: sortByOrder
 });
 
 @Store<ListsState>(listsAdapter.getInitialState())
